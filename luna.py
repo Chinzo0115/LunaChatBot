@@ -5,6 +5,8 @@ from asyncio import gather, get_event_loop, sleep
 from aiohttp import ClientSession
 from pyrogram import Client, filters, idle
 from Python_ARQ import ARQ
+from langdetect import detect, DetectorFactory
+DetectorFactory.seed = 0
 
 is_config = os.path.exists("config.py")
 
@@ -12,7 +14,12 @@ if is_config:
     from config import *
 else:
     from sample_config import *
-
+def detect_language(text):
+    try:
+        lang = detect(text)
+        return lang
+    except:
+        return "en"
 luna = Client(
     ":memory:",
     bot_token=bot_token,
